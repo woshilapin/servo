@@ -200,7 +200,7 @@ pub trait PresentationalHintsSynthetizer {
         where V: VecLike<DeclarationBlock<Vec<PropertyDeclaration>>>;
 }
 
-pub trait TElement : Sized + Copy + Clone + ElementExt + PresentationalHintsSynthetizer {
+pub trait TElement<'b> : Sized + Copy + Clone + ElementExt<'b> + PresentationalHintsSynthetizer {
     type ConcreteNode: TNode<ConcreteElement = Self, ConcreteDocument = Self::ConcreteDocument>;
     type ConcreteDocument: TDocument<ConcreteNode = Self::ConcreteNode, ConcreteElement = Self>;
 

@@ -55,7 +55,7 @@ impl PseudoElementCascadeType {
     }
 }
 
-pub trait ElementExt: Element {
+pub trait ElementExt<'a>: Element<'a> {
     fn is_link(&self) -> bool;
 }
 
@@ -251,7 +251,7 @@ impl SelectorImplExt for ServoSelectorImpl {
     }
 }
 
-impl<E: Element<Impl=ServoSelectorImpl>> ElementExt for E {
+impl<E> ElementExt for E where for<'a> E: Element<'a, Impl=ServoSelectorImpl> {
     fn is_link(&self) -> bool {
         self.match_non_ts_pseudo_class(NonTSPseudoClass::AnyLink)
     }

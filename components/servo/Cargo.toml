@@ -80,3 +80,6 @@ android_glue = "0.1.3"
 
 [target.'cfg(not(target_os = "windows"))'.dependencies]
 gaol = {git = "https://github.com/servo/gaol"}
+
+[replace]
+"selectors:0.6.0" = {path = "../../../rust-selectors"}

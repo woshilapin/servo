@@ -284,7 +284,7 @@ impl<Impl: SelectorImplExt> Stylist<Impl> {
                                                   pseudo: &Impl::PseudoElement,
                                                   parent: &Arc<Impl::ComputedValues>)
                                                   -> Option<Arc<Impl::ComputedValues>>
-                                                  where E: Element<Impl=Impl> +
+                                                  where for<'a> E: Element<'a, Impl=Impl> +
                                                         PresentationalHintsSynthetizer {
         debug_assert!(Impl::pseudo_element_cascade_type(pseudo).is_lazy());
         if self.pseudos_map.get(pseudo).is_none() {
@@ -317,7 +317,7 @@ impl<Impl: SelectorImplExt> Stylist<Impl> {
                                    // more expensive than getting it directly from the caller.
                                    current_state: ElementState)
                                    -> RestyleHint
-                                   where E: Element<Impl=Impl> + Clone {
+                                   where for<'a> E: Element<'a, Impl=Impl> + Clone {
         self.state_deps.compute_hint(element, snapshot, current_state)
     }
 
@@ -362,7 +362,7 @@ impl<Impl: SelectorImplExt> Stylist<Impl> {
                                         pseudo_element: Option<&Impl::PseudoElement>,
                                         applicable_declarations: &mut V)
                                         -> bool
-                                        where E: Element<Impl=Impl> + PresentationalHintsSynthetizer,
+                                        where for<'a> E: Element<'a, Impl=Impl> + PresentationalHintsSynthetizer,
                                               V: VecLike<DeclarationBlock> {
         assert!(!self.is_device_dirty);
         assert!(style_attribute.is_none() || pseudo_element.is_none(),

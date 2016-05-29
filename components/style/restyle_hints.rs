@@ -79,15 +79,15 @@ impl ElementSnapshot {
 static EMPTY_SNAPSHOT: ElementSnapshot = ElementSnapshot { state: None, attrs: None };
 
 struct ElementWrapper<'a, E>
-    where E: Element,
-          E::Impl: SelectorImplExt {
+    where for<'b> E: Element<'b>,
+          for<'b> <E as Element<'b>>::Impl: SelectorImplExt {
     element: E,
     snapshot: &'a ElementSnapshot,
 }
 
 impl<'a, E> ElementWrapper<'a, E>
-    where E: Element,
-          E::Impl: SelectorImplExt {
+    where for<'b> E: Element<'b>,
+          for<'b> <E as Element<'b>>::Impl: SelectorImplExt {
     pub fn new(el: E) -> ElementWrapper<'a, E> {
         ElementWrapper { element: el, snapshot: &EMPTY_SNAPSHOT }
     }
@@ -97,8 +97,8 @@ impl<'a, E> ElementWrapper<'a, E>
     }
 }
 
-impl<'a, E> Element for ElementWrapper<'a, E>
-    where E: Element,
+impl<'a, 'b, E> Element<'b> for ElementWrapper<'a, E>
+    where E: Element<'b>,
           E::Impl: SelectorImplExt {
     type Impl = E::Impl;
 
@@ -281,7 +281,7 @@ impl<Impl: SelectorImplExt> DependencySet<Impl> {
 
     pub fn compute_hint<E>(&self, el: &E, snapshot: &ElementSnapshot, current_state: ElementState)
                           -> RestyleHint
-                          where E: Element<Impl=Impl> + Clone {
+                          where for<'a> E: Element<'a, Impl=Impl> + Clone {
         let state_changes = snapshot.state.map_or(ElementState::empty(), |old_state| current_state ^ old_state);
         let attrs_changed = snapshot.attrs.is_some();
         let mut hint = RestyleHint::empty();

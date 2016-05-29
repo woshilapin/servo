@@ -123,8 +123,8 @@ pub fn recalc_style_at<'a, N, C>(context: &'a C,
                                  root: OpaqueNode,
                                  node: N)
     where N: TNode,
-          C: StyleContext<'a, <N::ConcreteElement as Element>::Impl>,
-          <N::ConcreteElement as Element>::Impl: SelectorImplExt<ComputedValues=N::ConcreteComputedValues> + 'a {
+          C: StyleContext<'a, <N::ConcreteElement as Element<'a>>::Impl>,
+          <N::ConcreteElement as Element<'a>>::Impl: SelectorImplExt<ComputedValues=N::ConcreteComputedValues> + 'a {
     // Initialize layout data.
     //
     // FIXME(pcwalton): Stop allocating here. Ideally this should just be done by the HTML
